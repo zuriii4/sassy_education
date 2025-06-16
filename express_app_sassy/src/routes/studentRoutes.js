@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_1 = require("../middleware/auth");
+const checkPer_1 = require("../middleware/checkPer");
+const studentController_1 = require("../controllers/studentController");
+const groupController_1 = require("../controllers/groupController");
+const router = (0, express_1.Router)();
+router.post('/register', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.registerStudent);
+router.get('/', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.getAllStudents);
+router.get('/names', studentController_1.getStudentsNames);
+router.get('/:studentId', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.getStudentDetails);
+router.get('/:studentId/groups', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.getStudentGroups);
+router.get('/:q', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.searchStudents);
+router.delete('/groups/:groupId/students/:studentId', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), groupController_1.removeStudentFromGroup);
+router.put('/update/:studentId', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.updateUserById);
+router.delete('/delete/:studentId', auth_1.authenticate, (0, checkPer_1.checkPermission)('manage_students'), studentController_1.deleteStudent);
+exports.default = router;
